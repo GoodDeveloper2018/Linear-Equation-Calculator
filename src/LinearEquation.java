@@ -10,17 +10,44 @@ public class LinearEquation {
         this.y2 = y2;
     }
 
-    // Calculate the slope, m
+    // Calculate the slope, m, and reduce the fraction if needed
     public String getSlope() {
         int numerator = y2 - y1;
         int denominator = x2 - x1;
         if (denominator == 0) {
             return "undefined";  // vertical line
-        } else if (numerator % denominator == 0) {
-            return String.valueOf(numerator / denominator);  // integer slope
         } else {
-            return numerator + "/" + denominator;  // fractional slope
+            return reduceFraction(numerator, denominator);
         }
+    }
+
+    // Helper method to reduce the fraction
+    private String reduceFraction(int numerator, int denominator) {
+        int gcd = gcd(numerator, denominator);  // Calculate greatest common divisor
+        numerator /= gcd;
+        denominator /= gcd;
+
+        // Handle cases where the denominator is negative
+        if (denominator < 0) {
+            numerator = -numerator;
+            denominator = -denominator;
+        }
+
+        // If the denominator is 1, return the numerator as a whole number
+        if (denominator == 1) {
+            return String.valueOf(numerator);
+        }
+
+        // Return the reduced fraction
+        return numerator + "/" + denominator;
+    }
+
+    // Helper method to calculate the greatest common divisor (gcd)
+    private int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
     }
 
     // Calculate the y-intercept, b
